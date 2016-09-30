@@ -597,7 +597,7 @@ int main(int argc, char *argv[])
 	struct stat fst;
 	memset(&fst, '\0', sizeof(struct stat));
 	if (stat(userprefdir, &fst) < 0) {
-		if (mkdir(userprefdir, 0775) < 0) {
+		if (mkdir_with_parents(userprefdir, 0775) < 0) {
 			usbmuxd_log(LL_FATAL, "Failed to create required directory '%s': %s", userprefdir, strerror(errno));
 			res = -1;
 			goto terminate;

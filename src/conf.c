@@ -125,6 +125,8 @@ const char *config_get_config_dir()
 #else
 #ifdef __APPLE__
 	base_config_dir = strdup("/var/db");
+#elif defined(CONFIG_DIR_BASE)
+	base_config_dir = strdup(CONFIG_DIR_BASE);
 #else
 	base_config_dir = strdup("/var/lib");
 #endif
@@ -154,7 +156,7 @@ static int __mkdir(const char *dir, int mode)
 #endif
 }
 
-static int mkdir_with_parents(const char *dir, int mode)
+int mkdir_with_parents(const char *dir, int mode)
 {
 	if (!dir) return -1;
 	if (__mkdir(dir, mode) == 0) {
@@ -171,6 +173,10 @@ static int mkdir_with_parents(const char *dir, int mode)
 		res = -1;
 	}
 	free(parent);
+
+	if(0 == res) {
+		res = __mkdir(dir, mode);
+	}
 	return res;
 }
 

@@ -27,6 +27,7 @@
 #include <plist/plist.h>
 
 const char *config_get_config_dir(void);
+int mkdir_with_parents(const char *dir, int mode);
 
 void config_get_system_buid(char **system_buid);
 
