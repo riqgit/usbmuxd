@@ -32,10 +32,10 @@ enum loglevel {
 	LL_FLOOD,
 };
 
-extern unsigned int log_level;
+extern int log_level;
 
-void log_enable_syslog();
-void log_disable_syslog();
+void log_enable_syslog(void);
+void log_disable_syslog(void);
 
 void usbmuxd_log(enum loglevel level, const char *fmt, ...) __attribute__ ((format (printf, 2, 3)));
 

@@ -426,7 +426,7 @@ static int usb_device_add(libusb_device* dev)
 			break;
 	}
 
-	usbmuxd_log(LL_INFO, "USB Speed is %g MBit/s for device %d-%d", (double)(usbdev->speed / 1000000.0), usbdev->bus, usbdev->address);
+	usbmuxd_log(LL_INFO, "USB Speed is %g MBit/s for device %d-%d", ((double)usbdev->speed / 1000000.0), usbdev->bus, usbdev->address);
 
 	collection_init(&usbdev->tx_xfers);
 	collection_init(&usbdev->rx_xfers);
@@ -534,7 +534,7 @@ uint32_t usb_get_location(struct usb_device *dev)
 	if(!dev->dev) {
 		return 0;
 	}
-	return (dev->bus << 16) | dev->address;
+	return (uint32_t)((dev->bus << 16) | dev->address);
 }
 
 uint16_t usb_get_pid(struct usb_device *dev)
@@ -669,6 +669,9 @@ static libusb_hotplug_callback_handle usb_hotplug_cb_handle;
 
 static int usb_hotplug_cb(libusb_context *ctx, libusb_device *device, libusb_hotplug_event event, void *user_data)
 {
+    (void)ctx;
+    (void)user_data;
+
 	if (LIBUSB_HOTPLUG_EVENT_DEVICE_ARRIVED == event) {
 		if (device_hotplug) {
 			usb_device_add(device);

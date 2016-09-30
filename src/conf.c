@@ -217,7 +217,7 @@ static char *config_generate_uuid(int idx)
  *
  * @return A null terminated string containing a valid BUID.
  */
-static char *config_generate_system_buid()
+static char *config_generate_system_buid(void)
 {
 	return config_generate_uuid(1);
 }

@@ -33,11 +33,11 @@
 #include "log.h"
 #include "utils.h"
 
-unsigned int log_level = LL_WARNING;
+int log_level = LL_WARNING;
 
 int log_syslog = 0;
 
-void log_enable_syslog()
+void log_enable_syslog(void)
 {
 	if (!log_syslog) {
 		openlog("usbmuxd", LOG_PID, 0);
@@ -45,7 +45,7 @@ void log_enable_syslog()
 	}
 }
 
-void log_disable_syslog()
+void log_disable_syslog(void)
 {
 	if (log_syslog) {
 		closelog();

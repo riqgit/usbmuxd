@@ -20,7 +20,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#define _BSD_SOURCE
+#define _DEFAULT_SOURCE
 #define _GNU_SOURCE
 
 #ifdef HAVE_CONFIG_H
@@ -149,7 +149,7 @@ static void set_signal_handlers(void)
 	sigaddset(&set, SIGUSR1);
 	sigaddset(&set, SIGUSR2);
 	sigprocmask(SIG_SETMASK, &set, NULL);
-	
+
 	memset(&sa, 0, sizeof(struct sigaction));
 	sa.sa_handler = handle_signal;
 	sigaction(SIGINT, &sa, NULL);
@@ -201,7 +201,7 @@ static int main_loop(int listenfd)
 
 		tspec.tv_sec = to / 1000;
 		tspec.tv_nsec = (to % 1000) * 1000000;
-		cnt = ppoll(pollfds.fds, pollfds.count, &tspec, &empty_sigset);
+		cnt = ppoll(pollfds.fds, (nfds_t)pollfds.count, &tspec, &empty_sigset);
 		usbmuxd_log(LL_FLOOD, "poll() returned %d", cnt);
 		if(cnt == -1) {
 			if(errno == EINTR) {
@@ -354,7 +354,7 @@ static int notify_parent(int status)
 	return 0;
 }
 
-static void usage()
+static void usage(void)
 {
 	printf("Usage: %s [OPTIONS]\n", PACKAGE_NAME);
 	printf("Expose a socket to multiplex connections from and to iOS devices.\n\n");
@@ -404,7 +404,7 @@ static void parse_opts(int argc, char **argv)
 
 #ifdef HAVE_SYSTEMD
 	const char* opts_spec = "hfvVuU:xXsnz";
-#elif HAVE_UDEV
+#elif defined(HAVE_UDEV)
 	const char* opts_spec = "hfvVuU:xXnz";
 #else
 	const char* opts_spec = "hfvVU:xXnz";

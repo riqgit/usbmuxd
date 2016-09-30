@@ -20,6 +20,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#define _GNU_SOURCE
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
@@ -77,6 +79,7 @@ void fdlist_reset(struct fdlist *list)
 
 #define CAPACITY_STEP 8
 
+#ifndef HAVE_LIBIMOBILEDEVICE
 void collection_init(struct collection *col)
 {
 	col->list = malloc(sizeof(void *) * CAPACITY_STEP);
@@ -127,6 +130,7 @@ int collection_count(struct collection *col)
 	}
 	return cnt;
 }
+#endif
 
 void collection_copy(struct collection *dest, struct collection *src)
 {
@@ -159,6 +163,7 @@ char *stpcpy(char * s1, const char * s2)
 }
 #endif
 
+#ifndef HAVE_LIBIMOBILEDEVICE
 /**
  * Concatenate strings into a newly allocated string
  *
@@ -301,6 +306,7 @@ int plist_write_to_filename(plist_t plist, const char *filename, enum plist_form
 
 	return 1;
 }
+#endif
 
 #ifdef __APPLE__
 typedef int clockid_t;
